@@ -16,7 +16,7 @@ use context::{
 use event::ScriptCallbackEvent;
 use handler::{CallbackSettings, HandlerFn};
 use runtime::{initialize_runtime, Runtime, RuntimeContainer, RuntimeInitializer, RuntimeSettings};
-use script::Scripts;
+use script::{ScriptComponent, Scripts};
 
 pub mod asset;
 pub mod bindings;
@@ -225,6 +225,7 @@ fn register_types(app: &mut App) {
     app.register_type::<ScriptValue>();
     app.register_type::<ScriptTypeRegistration>();
     app.register_type::<ReflectReference>();
+    app.register_type::<ScriptComponent>();
 }
 
 pub trait AddRuntimeInitializer {
