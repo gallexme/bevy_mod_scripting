@@ -263,15 +263,14 @@ impl UserData for LuaReflectReference {
         m.add_meta_function(MetaMethod::Iter, |_, s: LuaReflectReference| {
             // let mut iter_func = lookup_dynamic_function_typed::<ReflectReference>(l, "iter")
             //     .expect("No iter function registered");
-            let world = ThreadWorldContainer.get_world();
+            let world = ThreadWorldContainer.try_get_world()?;
 
             let iter_func = world
                 .lookup_function([TypeId::of::<ReflectReference>()], "iter")
-                .expect("No iter function registered");
+                .map_err(|f| InteropError::missing_function(TypeId::of::<ReflectReference>(), f))?;
 
             Ok(LuaScriptValue::from(iter_func.call(
                 vec![ScriptValue::Reference(s.into())],
-                world,
                 LUA_CALLER_CONTEXT,
             )?))
         });
